@@ -5,10 +5,21 @@ $(function () {
   $('#currentDay').text(date);
   var timeBlocks = $('.time-block');
 
+  function getSavedNote(parentDivID) {
+    var savedNote = JSON.parse(localStorage.getItem(parentDivID));
+
+    $('#' + parentDivID + ' textarea').text(savedNote);
+
+    console.log(savedNote);
+  }
+
   timeBlocks.each(function () {
     var timeBlock = $(this);
     var timeBlockHour = timeBlock.attr('id').split('-')[1];
     var currentHour = dayjs().hour();
+    var parentDivID = timeBlock.attr('id');
+
+    getSavedNote(parentDivID);
 
     if (timeBlockHour == currentHour) {
       timeBlock.addClass('present');
@@ -27,17 +38,10 @@ $(function () {
     console.log(textArea);
 
     localStorage.setItem(parentDivID, JSON.stringify(textArea));
-    getSavedNote();
-
-    function getSavedNote() {
-      var textBox = JSON.parse(localStorage.getItem(textArea));
-      if (textBox !== null) {
-        $('textarea').text = textBox.value;
-      }
-    }
-    
+    getSavedNote(parentDivID);
   }
     
   saveBtn.click(saveNote);
-
 });
+
+
